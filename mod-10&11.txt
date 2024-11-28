@@ -1,0 +1,177 @@
+%% Draw the two dimensional vector field for the vector 𝑥𝜄→ +𝑦𝖩→
+
+
+clc
+clear all
+syms x y
+F=input( 'enter the vector as i, and j order in vector form:');
+P = inline(vectorize(F(1)), 'x', 'y');
+Q = inline(vectorize(F(2)), 'x', 'y'); x = linspace(-1, 1, 10);
+y = x;
+[X,Y] = meshgrid(x,y); U = P(X,Y);
+V = Q(X,Y);
+quiver(X,Y,U,V,1) axis on
+xlabel('x')
+ylabel('y')
+
+
+
+
+
+
+
+
+
+%% Draw the three dimensional vector field for the vector 𝑥𝜄→ -𝑦𝖩→ +𝑧⃗𝑘→
+
+syms x y z
+F=input( 'enter the vector as i,j and korder in vector form:')
+P = inline(vectorize(F(1)), 'x', 'y','z');
+Q = inline(vectorize(F(2)), 'x', 'y','z');
+R = inline(vectorize(F(3)), 'x', 'y','z'); x = linspace(-1, 1, 5); y = x;
+z=x;
+[X,Y,Z] = meshgrid(x,y,z); U = P(X,Y,Z);
+V = Q(X,Y,Z);
+W = R(X,Y,Z); quiver3(X,Y,Z,U,V,W,1.5)
+axis on xlabel('x')
+ylabel('y')
+zlabel('z')
+
+
+
+
+
+
+
+%% Find (a) the curl and (b) the divergence of the vector field.
+
+clc clear all
+syms x y z real
+F=input( 'enter the vector as i, j and k order in vector form:') curl_F = curl(F, [x y z])
+div_F = divergence(F, [x y z])
+
+
+
+
+
+
+
+
+
+%% whether F is conservative , find scalar potential
+
+clc
+clear all
+syms x y z real
+F=input( 'enter the vector as i,j and k order in vector form:') curl_F = curl(F, [x y z])
+if (curl_F ==[0 0 0])
+f = potential(F, [x y z])
+else
+sprintf('curl_F is not equal to zero')
+end
+
+
+
+
+
+
+
+
+%% LINE INTEGRAL
+clc
+clear
+syms t x y
+f=input('enter the  f vector as i and j order in vector form:');
+rbar = input('enter the r vector as i and j order in vector form:');
+lim=input('enter the limit of integration:');
+vecfi=input('enter the vector field range'); % knowledge of the curve is essential
+drbar=diff(rbar,t);
+sub = subs(f,[x,y],rbar);
+f1=dot(sub,drbar)
+int(f1,t,lim(1),lim(2))
+P = inline(vectorize(f(1)), 'x', 'y');
+Q = inline(vectorize(f(2)), 'x', 'y')
+x = linspace(vecfi(1),vecfi(2), 10); y = x;
+[X,Y] = meshgrid(x,y);
+U = P(X,Y);
+V = Q(X,Y);
+quiver(X,Y,U,V)
+hold on
+fplot(rbar(1),rbar(2),[lim(1),lim(2)])
+axis on
+xlabel('x')
+ylabel('y')
+
+
+
+
+
+
+
+
+%% Find the work done by the force field F⃗(x,y)=(y+z,  x+z, x+y) on a particle that moves along the line segment (1, 0, 0) to (3, 4, 2)
+
+
+clc
+clear
+syms t x y z
+f=input('enter the  f vector as i j and korder in vector form:');
+rbar = input('enter the r vector as i j and k order in vector form:');
+lim=input('enter the limit of integration:');
+vecfi=input('enter the vector field range'); % knowledge of the curve is essential
+drbar=diff(rbar,t);
+sub = subs(f,[x,y,z],rbar);
+f1=dot(sub,drbar)
+int(f1,t,lim(1),lim(2))
+P = inline(vectorize(f(1)), 'x', 'y', 'z');
+Q = inline(vectorize(f(2)), 'x', 'y', 'z');
+R = inline(vectorize(f(3)), 'x', 'y', 'z');
+x = linspace(vecfi(1),vecfi(2), 10); y = x; z=x;
+[X,Y,Z] = meshgrid(x,y,z);
+U = P(X,Y,Z);
+V = Q(X,Y,Z);
+W = R(X,Y,Z);
+quiver3(X,Y,Z,U,V,W)
+hold on
+t=linspace(lim(1),lim(2),50);
+a=subs(rbar(1),t);
+b=subs(rbar(2),t);
+c=subs(rbar(3),t);
+plot3(a,b,c)
+axis on
+xlabel('x')
+ylabel('y')
+zlabel('z')
+
+
+
+
+
+
+
+
+%% Greens Theorem
+
+clc
+clear all
+syms x y r t
+F=input('enter the  F vector as i and j order in vector form:');
+integrand=diff(F(2),x)-diff(F(1),y);
+polarint=r*subs(integrand,[x,y],[r*cos(t),r*sin(t)]);
+sol=int(int(polarint,r,0,3),t,0,2*pi);
+P = inline(vectorize(F(1)), 'x', 'y');
+Q = inline(vectorize(F(2)), 'x', 'y')
+x = linspace(-3.2,3.2, 10); y = x;
+[X,Y] = meshgrid(x,y);
+U = P(X,Y);
+V = Q(X,Y);
+quiver(X,Y,U,V)
+hold on
+fplot(3*cos(t),3*sin(t),[0,2*pi])
+axis equal
+
+
+
+
+
+

@@ -1,0 +1,115 @@
+%%circle ------------
+
+clc
+clearall
+close all
+t = linspace(0, 2*pi,20);
+x = 3+2*cos(t);
+y = 4+2*sin(t);
+plot(x,y,'k-*')
+axis equal
+xlabel('x(m)')
+ylabel('y(m)')
+title('graph of (x-1)^2+(y-3)^2=4')
+legend('(x-1)^2+(y-3)^2=4')
+
+
+
+%% subplot --------
+
+clc
+clear all
+close all
+x=0:0.1:2*pi;
+
+subplot(2,2,1)
+plot(x,sin(x));
+
+subplot(2,2,2)
+plot(x,cos(x),'r-*');
+
+subplot(2,2,3)
+plot(x,exp(-x),'go');
+
+subplot(2,2,4)
+plot(x,sin(3*x),'ms');
+
+
+
+%% ezplot -------------
+
+clc
+clear all
+symsx
+
+f=sin(2*x)+cos(3*x)
+figure(1)
+ezplot(f)
+figure(2)
+ezplot(f,[0,3])
+
+
+
+%% Tangent line --------------
+
+symsx
+y=input('enter the function f in terms of x:');
+x1 = input('Enter x value at which tangent : ');
+x1=2;
+D=[x1-2 x1+2]
+ezplot(y,D)
+
+hold on
+
+8yd = diff(y,x);
+slope = subs(yd,x,x1);
+y1 = subs(y,x,x1);
+
+given point
+plot(x1,y1,'ko')
+
+Tgt_line = slope*(x-x1)+y1
+point
+h = ezplot(Tgt_line,D);
+set(h,'color','r')
+
+
+
+%% Extrema (min / max) ------------
+
+syms x real
+f= input('Enter the function f(x):');
+fx= diff(f,x)
+c = solve(fx)
+cmin = min(double(c));
+cmax = max(double(c));
+ezplot(f,[cmin-2,cmax+2])
+hold on
+fxx= diff(fx,x)
+
+for i = 1:1:size(c)
+    T1 = subs(fxx, x ,c(i) );
+    T3= subs(f, x, c(i));
+        if (double(T1)==0)
+            sprintf('The point x is %d inflexion point',double (c(i)))
+        else
+        if (double(T1) < 0)
+            sprintf('The maximum point x is %d', double(c(i)))
+            sprintf('The value of the function is %d', double (T3))
+        else
+            sprintf('The minimum point x is %d', double(c(i)))
+            sprintf('The value of the function is %d', double
+        (T3))
+        end
+    end
+    plot(double(c(i)), double(T3), 'r*', 'markersize', 15);
+end
+
+pause
+h=ezplot(fx,[cmin-2,cmax+2])
+set(h,'color','r')
+hold on
+pause
+e=ezplot(fxx,[cmin-4,cmax+4])
+set(e,'color','g')
+hold off
